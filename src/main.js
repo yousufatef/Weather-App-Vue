@@ -4,7 +4,7 @@ import "./assets/tailwind.css";
 import App from "./App.vue";
 import Home from "./views/Home.vue";
 
-const routes = [{ path: "/", component: Home }];
+const routes = [{ path: "/", name: "home", component: Home }];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
