@@ -60,6 +60,7 @@ const previewCity = (searchResult) => {
       preview: true,
     },
   });
+
 };
 
 const getSearchResults = () => {
