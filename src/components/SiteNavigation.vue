@@ -17,7 +17,7 @@
         ></i>
         <i
           class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
-          @click="addCityToLocalStorage"
+          @click="addCity"
           v-if="route.query"
         ></i>
       </div>
@@ -57,19 +57,19 @@
 </template>
 
 <script setup>
-import { RouterLink, useRoute } from "vue-router";
+import { RouterLink, useRoute, useRouter } from "vue-router";
+import { uid } from "uid";
 import { ref } from "vue";
 import PopupModal from "./PopupModal.vue";
-import { uid } from "uid";
 
-const route = useRoute();
-const modalActive = ref(null);
 const savedCities = ref([]);
-
-const addCityToLocalStorage = () => {
+const route = useRoute();
+const router = useRouter();
+const addCity = () => {
   if (localStorage.getItem("savedCities")) {
-    savedCities.value = JSON.parse(localStorage.getItem(savedCities));
+    savedCities.value = JSON.parse(localStorage.getItem("savedCities"));
   }
+
   const locationObj = {
     id: uid(),
     state: route.params.state,
@@ -79,13 +79,17 @@ const addCityToLocalStorage = () => {
       lng: route.query.lng,
     },
   };
+
   savedCities.value.push(locationObj);
   localStorage.setItem("savedCities", JSON.stringify(savedCities.value));
 
   let query = Object.assign({}, route.query);
   delete query.preview;
+  query.id = locationObj.id;
   router.replace({ query });
 };
+
+const modalActive = ref(null);
 const toggleModal = () => {
   modalActive.value = !modalActive.value;
 };
